@@ -26,9 +26,9 @@ module CodeRay module Scanners
     PROGRAMS = %w(
       awk bash bunzip2 bzcat bzip2 cat chgrp chmod chown cp cut date dd df dir dmesg du ed egrep
       false fgrep findmnt fusermount gawk grep groups gunzip gzip hostname install keyctl kill less
+      gtar touch  tput tr traceroute traceroute6 true umount uname uncompress vdir zcat
       ln loadkeys login ls lsblk lsinitcpio lsmod mbchk mkdir mkfifo mknod more mount mountpoint mv
       netstat pidof ping ping6 ps pwd readlink red rm rmdir sed sh shred sleep stty su sudo sync tar
-      touch  tput tr traceroute traceroute6 true umount uname uncompress vdir zcat
     )
 
     VARIABLES = %w(
@@ -55,7 +55,7 @@ module CodeRay module Scanners
       add(RESERVED_WORDS, :reserved).
       add(COMMANDS, :method).
       add(BASH_COMMANDS, :method).
-#      add(PROGRAMS, :method).
+      add(PROGRAMS, :method).
       add(VARIABLES, :predefined).
       add(BASH_VARIABLES, :predefined)
 
@@ -83,7 +83,7 @@ module CodeRay module Scanners
         if @state == :initial
           if  match = scan(/\A#!.*/)
             kind = :directive
-          elsif match = scan(/\s*#.*/)
+          elsif match = scan(/(^#|\s+#).*/)
             kind = :comment
           elsif match = scan(/[^"]#/)
             kind = :ident
